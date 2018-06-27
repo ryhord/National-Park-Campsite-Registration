@@ -17,9 +17,9 @@ namespace Capstone.DAL
 			connectionString = databaseConnectionString;
 		}
 
-		public List<Campground> GetAllCampgrounds(int id)
+		public List<Object> GetAllCampgrounds(int id)
 		{
-			List<Campground> campgrounds = new List<Campground>();
+			List<Object> campgrounds = new List<Object>();
 			try
 			{
 				using (SqlConnection conn = new SqlConnection(connectionString))

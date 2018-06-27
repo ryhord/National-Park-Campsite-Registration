@@ -17,9 +17,9 @@ namespace Capstone.DAL
 			connectionString = databaseConnectionString;
 		}
 
-		public List<Park> GetAllParks()
+		public List<Object> GetAllParks()
 		{
-			List<Park> parks = new List<Park>();
+			List<Object> parks = new List<Object>();
 			try
 			{
 				using (SqlConnection conn = new SqlConnection(connectionString))
@@ -58,7 +58,7 @@ namespace Capstone.DAL
 
 		public Park GetParkById(int parkId)
 		{
-			Park park = null;
+			Park park = new Park();
 
 			try
 			{
@@ -74,7 +74,6 @@ namespace Capstone.DAL
 					while (reader.Read())
 					{
 						// Create a Park
-						park = new Park();
 						park.ParkId = Convert.ToInt32(reader["park_id"]);
 						park.Name = Convert.ToString(reader["name"]);
 						park.Location = Convert.ToString(reader["location"]);

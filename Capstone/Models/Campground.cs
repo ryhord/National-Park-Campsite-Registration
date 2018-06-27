@@ -14,5 +14,10 @@ namespace Capstone.Models
 		public int OpenFrom { get; set; }
 		public int OpenTo { get; set; }
 		public decimal DailyFee { get; set; }
+
+		public override string ToString()
+		{
+			return Name.PadRight(30) + OpenFrom.ToString().PadRight(10) + OpenTo.ToString().PadRight(10) + DailyFee.ToString("C").PadLeft(15);
+		}
 	}
 }

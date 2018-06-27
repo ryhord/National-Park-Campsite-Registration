@@ -11,7 +11,9 @@ namespace Capstone
     {
         static void Main(string[] args)
         {
-            
+			CampgroundCLI cli = new CampgroundCLI();
+			cli.RunProgram();
+			Console.WriteLine("Thank you for using our Campground Reservation System!");
         }
     }
 }

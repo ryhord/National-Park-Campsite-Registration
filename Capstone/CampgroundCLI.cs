@@ -38,14 +38,15 @@ namespace Capstone
 				{
 					Console.WriteLine("Idiot");
 				}
-
 			}
 			int parkInfoSubmenuChoice = ParkInfoSubmenu();
+			int campgroundInfoSubmenuChoice = 0;
 			switch (parkInfoSubmenuChoice)
 			{
 				case 1:
 					campgrounds = CampgroundsInSelectedPark(selectedParkID);
 					PrintAllListItems(campgrounds);
+					campgroundInfoSubmenuChoice = CampgroundInfoSubmenu();
 					break;
 				case 2:
 					break;
@@ -80,11 +81,6 @@ namespace Capstone
 			CampgroundDAL dal = new CampgroundDAL(DatabaseConnectionString);
 			List<Object> campgrounds = dal.GetAllCampgrounds(parkId);
 
-			for (int i = 1; i <= campgrounds.Count; i++)
-			{
-				Console.WriteLine($"{i}) {campgrounds[i - 1]}");
-			}
-
 			return campgrounds;
 		}
 
@@ -117,7 +113,7 @@ namespace Capstone
 		{
 			for (int i = 1; i <= list.Count; i++)
 			{
-				Console.WriteLine(list[i].ToString()); 
+				Console.WriteLine($"{i}) {list[i - 1].ToString()}"); 
 
 			}
 		}

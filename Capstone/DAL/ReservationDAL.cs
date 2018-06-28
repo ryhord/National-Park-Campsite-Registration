@@ -6,58 +6,13 @@ using System.Text;
 using System.Threading.Tasks;
 using Capstone.Models;
 
-//namespace Capstone.DAL
-//{
-//	public class ReservationDAL
-//	{
-//		private readonly string connectionString;
-
-//		public ReservationDAL(string databaseConnectionString)
-//		{
-//			connectionString = databaseConnectionString;
-//		}
-
-//		//public List<Reservation> GetReservationsByCampground(int id)
-//		//{
-//		//	List<Reservation> reservations = new List<Reservation>();
-//		//	try
-//		//	{
-//		//		using (SqlConnection conn = new SqlConnection(connectionString))
-//		//		{
-//		//			conn.Open();
-
-//		//			SqlCommand cmd = new SqlCommand($"SELECT * FROM reservation WHERE site_id = {id};", conn);
-
-//		//			SqlDataReader reader = cmd.ExecuteReader();
-
-//		//			// Loop through each row
-//		//			while (reader.Read())
-//		//			{
-//		//				// Create a Park
-//		//				Reservation reservation = new Reservation();
-//		//				reservation.ReservationId = Convert.ToInt32(reader["reservation_id"]);
-//		//				reservation.Name = Convert.ToString(reader["name"]);
-//		//				reservation.Location = Convert.ToString(reader["location"]);
-//		//				reservation.EstablishDate = Convert.ToDateTime(reader["establish_date"]);
-//		//				reservation.Area = Convert.ToInt32(reader["area"]);
-//		//				reservation.Visitors = Convert.ToInt32(reader["visitors"]);
-//		//				reservation.Description = Convert.ToString(reader["description"]);
-
-//		//				parks.Add(park);
-//		//			}
-//		//		}
-//		//	}
-//		//	catch (SqlException ex)
-//		//	{
-
-//		//		Console.WriteLine(ex.Message);
-//		//	}
-
-//		//	return parks;
-//		//}
-//	}
-//	}
-//}
+namespace Capstone.DAL
+{
+	public class ReservationDAL
+	{
+		
+	}
+}
 
 
 //SELECT*

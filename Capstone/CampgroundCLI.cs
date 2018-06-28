@@ -12,10 +12,13 @@ namespace Capstone
 	{
 		const string DatabaseConnectionString = @"Data Source=.\SQLEXPRESS;Initial Catalog=Campground;Integrated Security=True";
 
+		List<Campground> campgrounds = new List<Campground>();
+		List<Object> parks = new List<Object>();
+
 		public void RunProgram()
 		{
 			List<Park> parks = GetAllParks();
-			List<Object> campgrounds = new List<Object>();
+			
 			Console.WriteLine("Q) Quit");
 			Console.WriteLine();
 			Console.Write("Please make a selection: ");
@@ -39,21 +42,44 @@ namespace Capstone
 					Console.WriteLine("Idiot");
 				}
 			}
-			int parkInfoSubmenuChoice = ParkInfoSubmenu();
-			int campgroundInfoSubmenuChoice = 0;
-			switch (parkInfoSubmenuChoice)
-			{
-				case 1:
-					campgrounds = CampgroundsInSelectedPark(selectedParkID);
-					PrintAllListItems(campgrounds);
-					campgroundInfoSubmenuChoice = CampgroundInfoSubmenu();
-					break;
-				case 2:
-					break;
-				case 3:
-					break;
-			}
 
+			while (true)
+			{
+				int parkInfoSubmenuChoice = ParkInfoSubmenu();
+				int campgroundInfoSubmenuChoice = 0;
+				switch (parkInfoSubmenuChoice)
+				{
+					case 1:
+						CampgroundsInSelectedPark(selectedParkID);
+						PrintAllCampgrounds(campgrounds);
+						campgroundInfoSubmenuChoice = CampgroundInfoSubmenu();
+
+						switch (campgroundInfoSubmenuChoice)
+						{
+							case 1:
+								Console.WriteLine("Which campground? (Enter 0 to cancel)");
+								int campgroundChoice =  Convert.ToInt32(Console.ReadLine());
+								Console.WriteLine("Enter the start date for your reservation.. (YYYY-MM-DD)");
+								string fromDate = Console.ReadLine();
+								Console.WriteLine("Enter the end date for your reservation.. (YYYY-MM-DD)");
+								string toDate = Console.ReadLine();
+								int campgroundId = campgrounds[campgroundChoice - 1].CampgroundId;
+								List<Object> availableSites = GetAvilableSitesByCampGround(campgroundId, fromDate, toDate);
+								PrintAllListItems(availableSites);
+								break;
+							case 2:
+								break;
+						}
+
+
+
+						break;
+					case 2:
+						break;
+					case 3:
+						break;
+				}
+			}
 		}
 
 
@@ -76,12 +102,11 @@ namespace Capstone
 			return choice;
 		}
 
-		public List<Object> CampgroundsInSelectedPark(int parkId)
+		public void CampgroundsInSelectedPark(int parkId)
 		{
 			CampgroundDAL dal = new CampgroundDAL(DatabaseConnectionString);
-			List<Object> campgrounds = dal.GetAllCampgrounds(parkId);
+			campgrounds = dal.GetAllCampgrounds(parkId);
 
-			return campgrounds;
 		}
 
 		public int CampgroundInfoSubmenu()
@@ -109,11 +134,29 @@ namespace Capstone
 			return parks;
 		}
 
+		public List<Object> GetAvilableSitesByCampGround(int campgroundId, string fromDate, string toDate)
+		{
+			SiteDAL dal = new SiteDAL(DatabaseConnectionString);
+
+			List<Object> availableSites = dal.GetAvailableSitesByCampground(campgroundId, fromDate, toDate);
+
+			return availableSites;
+		}
+
 		public void PrintAllListItems(List<Object> list)
 		{
 			for (int i = 1; i <= list.Count; i++)
 			{
 				Console.WriteLine($"{i}) {list[i - 1].ToString()}"); 
+
+			}
+		}
+
+		public void PrintAllCampgrounds(List<Campground> list)
+		{
+			for (int i = 1; i <= list.Count; i++)
+			{
+				Console.WriteLine($"{i}) {list[i - 1].ToString()}");
 
 			}
 		}

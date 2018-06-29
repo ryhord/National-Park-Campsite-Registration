@@ -35,8 +35,10 @@ namespace Capstone
 					case "1":
 					case "2":
 					case "3":
+						Console.Clear();
 						selectedParkID = parks[int.Parse(input) - 1].ParkId;
 						GetParkInfo(selectedParkID);
+						Console.WriteLine("");
 						break;
 					default:
 						Console.Clear();
@@ -53,8 +55,10 @@ namespace Capstone
 					switch (parkInfoSubmenuChoice)
 					{
 						case 1:
+							Console.Clear();
 							CampgroundsInSelectedPark(selectedParkID);
 							PrintAllListItems(campgrounds.ToArray());
+							Console.WriteLine("");
 							campgroundInfoSubmenuChoice = CampgroundInfoSubmenu();
 
 							switch (campgroundInfoSubmenuChoice)
@@ -67,6 +71,11 @@ namespace Capstone
 
 										if (campgroundChoice == 0)
 										{
+											break;
+										}
+										if(campgroundChoice > campgrounds.Count)
+										{
+											Console.WriteLine("The number you entered is not associated with a campsite.");
 											break;
 										}
 
@@ -82,9 +91,6 @@ namespace Capstone
 											Console.WriteLine("Your start date cannot come after your end date");
 											break;
 										}
-
-
-
 
 										int campgroundId = campgrounds[campgroundChoice - 1].CampgroundId;
 										GetAvailableSitesByCampGround(campgroundId, fromDate, toDate, numberOfDaysBooked);
@@ -109,6 +115,10 @@ namespace Capstone
 										else
 										{
 											PrintAllListItems(availableSites.ToArray());
+											BookReservation();
+											//Which site should be reserved(enter 0 to cancel) ? __
+											//What name should the reservation be made under? __
+											//The reservation has been made and the confirmation id is { Reservation_id}
 											break;
 										}
 									}
@@ -130,6 +140,22 @@ namespace Capstone
 					}
 				}
 			}
+		}
+
+		private void BookReservation()
+		{
+
+			Reservation reservation = new Reservation();
+
+			ReservationDAL dal = new ReservationDAL(DatabaseConnectionString);
+
+			Console.WriteLine("Enter the site number that should be reserved? (Enter 0 to cancel)");
+			int siteIdForReservation = Convert.ToInt32(Console.ReadLine());
+
+			Console.WriteLine("What name should the reservation be made under?");
+			string name = Console.ReadLine();
+
+			int reservationId = dal.CreateReservation(reservation);
 		}
 
 		public int CheckDateDays(string stringFromDate, string stringToDate)

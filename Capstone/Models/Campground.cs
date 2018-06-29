@@ -17,7 +17,56 @@ namespace Capstone.Models
 
 		public override string ToString()
 		{
-			return Name.PadRight(30) + OpenFrom.ToString().PadRight(10) + OpenTo.ToString().PadRight(10) + DailyFee.ToString("C").PadLeft(15);
+			string openFromMonth = ToStringMonth(OpenFrom);
+			string openToMonth = ToStringMonth(OpenTo);
+
+			return Name.PadRight(30) + openFromMonth.PadRight(10) + openToMonth.PadRight(10) + DailyFee.ToString("C").PadLeft(15);
+		}
+
+		public string ToStringMonth(int monthInt)
+		{
+			string stringMonth = "";
+			switch (monthInt)
+			{
+				case 1:
+					stringMonth = "January";
+					break;
+				case 2:
+					stringMonth = "February";
+					break;
+				case 3:
+					stringMonth = "March";
+					break;
+				case 4:
+					stringMonth = "April";
+					break;
+				case 5:
+					stringMonth = "May";
+					break;
+				case 6:
+					stringMonth = "June";
+					break;
+				case 7:
+					stringMonth = "July";
+					break;
+				case 8:
+					stringMonth = "August";
+					break;
+				case 9:
+					stringMonth = "September";
+					break;
+				case 10:
+					stringMonth = "October";
+					break;
+				case 11:
+					stringMonth = "November";
+					break;
+				case 12:
+					stringMonth = "December";
+					break;
+			}
+			return stringMonth;
+
 		}
 	}
 }

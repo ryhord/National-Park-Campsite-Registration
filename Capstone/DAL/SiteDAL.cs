@@ -39,6 +39,7 @@ namespace Capstone.DAL
 					cmd.Parameters.AddWithValue("@fromDate", fromDate);
 					cmd.Parameters.AddWithValue("@toDate", toDate);
 
+
 					SqlDataReader reader = cmd.ExecuteReader();
 
 					// Loop through each row

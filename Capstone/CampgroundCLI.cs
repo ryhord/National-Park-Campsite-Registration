@@ -27,7 +27,8 @@ namespace Capstone
 				Console.WriteLine();
 				Console.Write("Please make a selection: ");
 				string input = Console.ReadLine().ToLower();
-
+				
+				// SelectingParkToGetInfoAbout
 				switch (input)
 				{
 					case "q":
@@ -47,91 +48,43 @@ namespace Capstone
 						break;
 				}
 
-
+				// selectedParkID used to get relevant submenu
 				while (isRunningSubmenu)
 				{
 					int parkInfoSubmenuChoice = ParkInfoSubmenu();
 					int campgroundInfoSubmenuChoice = 0;
 					switch (parkInfoSubmenuChoice)
 					{
+						// viewing campgrounds in the selectedParkId
 						case 1:
 							Console.Clear();
 							CampgroundsInSelectedPark(selectedParkID);
 							PrintAllListItems(campgrounds.ToArray());
-							Console.WriteLine("");
-							campgroundInfoSubmenuChoice = CampgroundInfoSubmenu();
+							Console.WriteLine();
 
-							switch (campgroundInfoSubmenuChoice)
+							while (true)
 							{
-								case 1:
-									while (true)
-									{
-										Console.WriteLine("Which campground? (Enter 0 to cancel)");
-										int campgroundChoice = Convert.ToInt32(Console.ReadLine());
+								campgroundInfoSubmenuChoice = CampgroundInfoSubmenu();
 
-										if (campgroundChoice == 0)
-										{
-											break;
-										}
-										if(campgroundChoice > campgrounds.Count)
-										{
-											Console.WriteLine("The number you entered is not associated with a campsite.");
-											break;
-										}
+								switch (campgroundInfoSubmenuChoice)
+								{
+									// Searching For Avilable Reservations within the campground of choice
+									case 1:
+										SearchForAvailableReservationsWithinCampground();
+										break;
 
-										Console.WriteLine("Enter the start date for your reservation: (YYYY-MM-DD)");
-										string fromDate = Console.ReadLine();
-
-										Console.WriteLine("Enter the end date for your reservation: (YYYY-MM-DD)");
-										string toDate = Console.ReadLine();
-										int numberOfDaysBooked = CheckDateDays(fromDate, toDate);
-
-										if(numberOfDaysBooked < 0)
-										{
-											Console.WriteLine("Your start date cannot come after your end date");
-											break;
-										}
-
-										int campgroundId = campgrounds[campgroundChoice - 1].CampgroundId;
-										GetAvailableSitesByCampGround(campgroundId, fromDate, toDate, numberOfDaysBooked);
-
-										if (availableSites.Count == 0)
-										{
-											Console.WriteLine("There are no sites available during this date range.");
-											Console.Write("Would you like to try again? Y/N > ");
-											string userInput = Console.ReadLine().ToUpper();
-											if (userInput == "Y" || userInput == "N")
-											{
-												if (userInput == "N")
-												{
-													break;
-												}
-											}
-											else
-											{
-												Console.WriteLine("Idiot");
-											}
-										}
-										else
-										{
-											PrintAllListItems(availableSites.ToArray());
-											BookReservation();
-											//Which site should be reserved(enter 0 to cancel) ? __
-											//What name should the reservation be made under? __
-											//The reservation has been made and the confirmation id is { Reservation_id}
-											break;
-										}
-									}
-									break;
-
-								case 2:
-									break;
+									// return to previousScreen
+									case 2:
+										break;
+								}
 							}
 
-							break;
-
+						// Search for Reservation from the first Menu
 						case 2:
-
+							// DOESNT DO ANYTHING YET. TALK ABOUT HOW AND WHERE TO SEARCH
+							Console.WriteLine("What is the name the reservation is under?");
+							string name = Console.ReadLine();
+							SearchForReservation(name);
 							break;
 
 						case 3:
@@ -142,9 +95,78 @@ namespace Capstone
 			}
 		}
 
+		private void SearchForAvailableReservationsWithinCampground()
+		{
+			while (true)
+			{
+				Console.WriteLine("Which campground? (Enter 0 to cancel)");
+				int campgroundChoice = Convert.ToInt32(Console.ReadLine());
+
+				if (campgroundChoice == 0)
+				{
+					break;
+				}
+				if (campgroundChoice > campgrounds.Count)
+				{
+					Console.WriteLine("The number you entered is not associated with a campsite.");
+					break;
+				}
+
+				Console.WriteLine("Enter the start date for your reservation: (YYYY-MM-DD)");
+				string fromDate = Console.ReadLine();
+
+				Console.WriteLine("Enter the end date for your reservation: (YYYY-MM-DD)");
+				string toDate = Console.ReadLine();
+				int numberOfDaysBooked = CheckDateDays(fromDate, toDate);
+
+				if (numberOfDaysBooked < 0)
+				{
+					Console.Clear();
+					Console.WriteLine("Your start date cannot come after your end date");
+					Console.WriteLine();
+					break;
+				}
+
+				int campgroundId = campgrounds[campgroundChoice - 1].CampgroundId;
+				GetAvailableSitesByCampGround(campgroundId, fromDate, toDate, numberOfDaysBooked);
+
+				if (availableSites.Count == 0)
+				{
+					Console.WriteLine("There are no sites available during this date range.");
+					Console.Write("Would you like to try again? Y/N > ");
+					string userInput = Console.ReadLine().ToUpper();
+					if (userInput == "Y" || userInput == "N")
+					{
+						if (userInput == "N")
+						{
+							break;
+						}
+					}
+					else
+					{
+						Console.WriteLine("Idiot");
+					}
+				}
+				else
+				{
+					PrintAllListItems(availableSites.ToArray());
+					BookReservation();
+					//Which site should be reserved(enter 0 to cancel) ? __
+					//What name should the reservation be made under? __
+					//The reservation has been made and the confirmation id is { Reservation_id}
+
+					break;
+				}
+			}
+		}
+
+		private void SearchForReservation(string name)
+		{
+			throw new NotImplementedException();
+		}
+
 		private void BookReservation()
 		{
-
 			Reservation reservation = new Reservation();
 
 			ReservationDAL dal = new ReservationDAL(DatabaseConnectionString);

@@ -19,36 +19,36 @@ namespace Capstone.Models
 
 		public override string ToString()
 		{
-			string output = $"{SiteId.ToString().PadRight(6)} {MaxOccupancy.ToString().PadRight(30)}";
+			string output = $"{SiteId.ToString().PadRight(13)} {MaxOccupancy.ToString().PadRight(17)}";
 
 			if (IsAccessible)
 			{
-				output += "Yes".PadRight(10);
+				output += "Yes".PadRight(15);
 			}
 			else
 			{
-				output += "No".PadRight(10);
+				output += "No".PadRight(15);
 			}
 
 			if (MaxRvLength == 0)
 			{
-				output += "N/A".PadRight(10);
+				output += "N/A".PadRight(15);
 			}
 			else
 			{
-				output += MaxRvLength.ToString().PadRight(10);
+				output += MaxRvLength.ToString().PadRight(15);
 			}
 
 			if (HasUtilities)
 			{
-				output += "Yes".PadRight(10);
+				output += "Yes".PadRight(17);
 			}
 			else
 			{
-				output += "N/A".PadRight(10);
+				output += "N/A".PadRight(17);
 			}
 
-			output += $"{TotalCost.ToString("C").PadRight(10)}";
+			output += $"{TotalCost.ToString("C").PadRight(15)}";
 
 			return output;
 		}

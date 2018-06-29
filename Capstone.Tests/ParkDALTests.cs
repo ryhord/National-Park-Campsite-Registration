@@ -18,5 +18,13 @@ namespace Capstone.Tests
 
 			Assert.AreEqual(2, parks.Count);
 		}
+
+		[TestMethod]
+		public void GetParkById_Test()
+		{
+			Park park = dal.GetParkById(1);
+
+			Assert.IsNotNull(park);
+		}
 	}
 }

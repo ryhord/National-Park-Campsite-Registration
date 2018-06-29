@@ -106,7 +106,6 @@ namespace Capstone
 			int fromMonthNumber = Convert.ToInt32(fromDateValues[1]);
 			int toMonthNumber = Convert.ToInt32(toDateValues[1]);
 
-
 			if (fromMonthNumber < campgroundOpenFromMonth ||
 				fromMonthNumber > campgroundOpenToMonth ||
 				toMonthNumber > campgroundOpenToMonth ||
@@ -118,7 +117,6 @@ namespace Capstone
 			{
 				return true;
 			}
-
 		}
 
 		private void SearchForAvailableReservationsWithinCampground()
@@ -181,11 +179,12 @@ namespace Capstone
 				}
 				else
 				{
+					Console.WriteLine("Results matching your search criteria");
+					Console.WriteLine("Site Id".PadRight(10) + "Max Occupancy".PadRight(15) +
+						"Wheelchair Access?".PadRight(20) + "Max RV Length".PadRight(18) + "Utilities".PadRight(15) +
+						"Total Cost");
 					PrintAllListItems(availableSites.ToArray());
 					BookReservation(fromDate, toDate);
-					//Which site should be reserved(enter 0 to cancel) ? __
-					//What name should the reservation be made under? __
-					//The reservation has been made and the confirmation id is { Reservation_id}
 
 					break;
 				}
@@ -196,7 +195,6 @@ namespace Capstone
 		{
 			throw new NotImplementedException();
 		}
-
 
 		public void BookReservation(string fromDate, string toDate)
 		{
@@ -230,6 +228,7 @@ namespace Capstone
 					{
 						Console.WriteLine($"Your reservation is complete.  Reservation id is {reservationId}.");
 					}
+
 					isListedSite = true;
 					break;
 				}
@@ -254,7 +253,6 @@ namespace Capstone
 		{
 			ParkDAL dal = new ParkDAL(DatabaseConnectionString);
 
-
 			Console.WriteLine($"{dal.GetParkById(parkId)}");
 		}
 
@@ -265,7 +263,9 @@ namespace Capstone
 			Console.WriteLine("2) Search for Reservation");
 			Console.WriteLine("3) Return to Park Selection Screen");
 			Console.Write("> ");
+
 			int choice = int.Parse(Console.ReadLine());
+
 			return choice;
 		}
 
@@ -273,7 +273,6 @@ namespace Capstone
 		{
 			CampgroundDAL dal = new CampgroundDAL(DatabaseConnectionString);
 			campgrounds = dal.GetAllCampgrounds(parkId);
-
 		}
 
 		public int CampgroundInfoSubmenu()
@@ -282,7 +281,9 @@ namespace Capstone
 			Console.WriteLine("1) Search for available reservation");
 			Console.WriteLine("2) Return to Previous Screen");
 			Console.Write("> ");
+
 			int choice = int.Parse(Console.ReadLine());
+
 			return choice;
 		}
 
@@ -291,7 +292,6 @@ namespace Capstone
 			ParkDAL dal = new ParkDAL(DatabaseConnectionString);
 
 			List<Park> parks = dal.GetAllParks();
-
 
 			for (int i = 1; i <= parks.Count; i++)
 			{

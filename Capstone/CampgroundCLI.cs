@@ -115,10 +115,11 @@ namespace Capstone
 										else
 										{
 											PrintAllListItems(availableSites.ToArray());
-											BookReservation();
+											BookReservation(fromDate, toDate);
 											//Which site should be reserved(enter 0 to cancel) ? __
 											//What name should the reservation be made under? __
-											//The reservation has been made and the confirmation id is { Reservation_id}
+											//The reservation has been made and the confirmation id is { Reservation_id}
+
 											break;
 										}
 									}
@@ -142,7 +143,7 @@ namespace Capstone
 			}
 		}
 
-		private void BookReservation()
+		public void BookReservation(string fromDate, string toDate)
 		{
 
 			Reservation reservation = new Reservation();
@@ -155,7 +156,21 @@ namespace Capstone
 			Console.WriteLine("What name should the reservation be made under?");
 			string name = Console.ReadLine();
 
+			reservation.SiteId = siteIdForReservation;
+			reservation.Name = name;
+			reservation.FromDate = Convert.ToDateTime(fromDate);
+			reservation.ToDate = Convert.ToDateTime(toDate);
+
 			int reservationId = dal.CreateReservation(reservation);
+
+			if (reservationId == 0)
+			{
+				Console.WriteLine("Failed to complete reservation.");
+			}
+			else
+			{
+				Console.WriteLine($"Your reservation is complete.  Reservation id is {reservationId}.");
+			}
 		}
 
 		public int CheckDateDays(string stringFromDate, string stringToDate)

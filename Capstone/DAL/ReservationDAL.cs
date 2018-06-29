@@ -29,6 +29,25 @@ namespace Capstone.DAL
 				{
 					conn.Open();
 
+					SqlCommand check = new SqlCommand("SELECT COUNT(reservation_id) AS numOfReservations FROM reservation " +
+						"WHERE ((reservation.from_date BETWEEN @fromDate AND @toDate) " +
+						"OR (reservation.to_date BETWEEN @fromDate AND @toDate)) " +
+						"AND site_id = @site_id " +
+						"GROUP BY reservation_id;", conn);
+					check.Parameters.AddWithValue("@fromDate", newReservation.FromDate);
+					check.Parameters.AddWithValue("@toDate", newReservation.ToDate);
+					check.Parameters.AddWithValue("@site_id", newReservation.SiteId);
+
+					SqlDataReader reader = check.ExecuteReader();
+
+					while (reader.Read())
+					{
+						if (Convert.ToInt32(reader["numOfReservations"]) > 0)
+						{
+							return rowsAffected;
+						}
+					}
+
 					SqlCommand cmd = new SqlCommand("INSERT INTO reservation(site_id, name, from_date, to_date) VALUES(@site_id, @name, @fromdate, @todate);", conn);
 					cmd.Parameters.AddWithValue("@site_id", newReservation.SiteId);
 					cmd.Parameters.AddWithValue("@name", newReservation.Name);
@@ -44,11 +63,11 @@ namespace Capstone.DAL
 						cmd2.Parameters.AddWithValue("@name", newReservation.Name);
 						cmd2.Parameters.AddWithValue("@site_id", newReservation.SiteId);
 
-						SqlDataReader reader = cmd2.ExecuteReader();
+						SqlDataReader reader2 = cmd2.ExecuteReader();
 
 						while (reader.Read())
 						{
-							reservationId = Convert.ToInt32(reader["reservation_id"]);
+							reservationId = Convert.ToInt32(reader2["reservation_id"]);
 						}
 						return reservationId;
 					}

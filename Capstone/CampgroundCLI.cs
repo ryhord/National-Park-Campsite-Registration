@@ -64,16 +64,14 @@ namespace Capstone
 								Console.WriteLine("Enter the end date for your reservation.. (YYYY-MM-DD)");
 								string toDate = Console.ReadLine();
 								int campgroundId = campgrounds[campgroundChoice - 1].CampgroundId;
-								List<Object> availableSites = GetAvilableSitesByCampGround(campgroundId, fromDate, toDate);
+								List<Object> availableSites = GetAvailableSitesByCampGround(campgroundId, fromDate, toDate);
 								PrintAllListItems(availableSites);
 								break;
 							case 2:
 								break;
 						}
-
-
-
 						break;
+
 					case 2:
 						break;
 					case 3:
@@ -134,7 +132,7 @@ namespace Capstone
 			return parks;
 		}
 
-		public List<Object> GetAvilableSitesByCampGround(int campgroundId, string fromDate, string toDate)
+		public List<Object> GetAvailableSitesByCampGround(int campgroundId, string fromDate, string toDate)
 		{
 			SiteDAL dal = new SiteDAL(DatabaseConnectionString);
 

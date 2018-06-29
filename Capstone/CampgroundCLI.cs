@@ -27,12 +27,8 @@ namespace Capstone
 				Console.WriteLine();
 				Console.Write("Please make a selection: ");
 				string input = Console.ReadLine().ToLower();
-<<<<<<< HEAD
-				
-				// SelectingParkToGetInfoAbout
-=======
 
->>>>>>> 6d338b4f801db1c7b325e51e5f0c63e8b3e8f65b
+				// SelectingParkToGetInfoAbout
 				switch (input)
 				{
 					case "q":
@@ -52,26 +48,20 @@ namespace Capstone
 						break;
 				}
 
-<<<<<<< HEAD
 				// selectedParkID used to get relevant submenu
-=======
-
->>>>>>> 6d338b4f801db1c7b325e51e5f0c63e8b3e8f65b
 				while (isRunningSubmenu)
 				{
 					int parkInfoSubmenuChoice = ParkInfoSubmenu();
 					int campgroundInfoSubmenuChoice = 0;
 					switch (parkInfoSubmenuChoice)
 					{
-<<<<<<< HEAD
+
 						// viewing campgrounds in the selectedParkId
-=======
->>>>>>> 6d338b4f801db1c7b325e51e5f0c63e8b3e8f65b
 						case 1:
 							Console.Clear();
 							CampgroundsInSelectedPark(selectedParkID);
 							PrintAllListItems(campgrounds.ToArray());
-<<<<<<< HEAD
+
 							Console.WriteLine();
 
 							while (true)
@@ -97,7 +87,6 @@ namespace Capstone
 							Console.WriteLine("What is the name the reservation is under?");
 							string name = Console.ReadLine();
 							SearchForReservation(name);
-=======
 							Console.WriteLine("");
 							campgroundInfoSubmenuChoice = CampgroundInfoSubmenu();
 
@@ -173,7 +162,7 @@ namespace Capstone
 
 						case 2:
 
->>>>>>> 6d338b4f801db1c7b325e51e5f0c63e8b3e8f65b
+
 							break;
 
 						case 3:
@@ -184,7 +173,7 @@ namespace Capstone
 			}
 		}
 
-<<<<<<< HEAD
+
 		private void SearchForAvailableReservationsWithinCampground()
 		{
 			while (true)
@@ -240,7 +229,7 @@ namespace Capstone
 				else
 				{
 					PrintAllListItems(availableSites.ToArray());
-					BookReservation();
+					BookReservation(fromDate, toDate);
 					//Which site should be reserved(enter 0 to cancel) ? __
 					//What name should the reservation be made under? __
 					//The reservation has been made and the confirmation id is { Reservation_id}
@@ -255,13 +244,11 @@ namespace Capstone
 			throw new NotImplementedException();
 		}
 
-		private void BookReservation()
-		{
-=======
+
 		public void BookReservation(string fromDate, string toDate)
 		{
 
->>>>>>> 6d338b4f801db1c7b325e51e5f0c63e8b3e8f65b
+
 			Reservation reservation = new Reservation();
 
 			ReservationDAL dal = new ReservationDAL(DatabaseConnectionString);
@@ -272,9 +259,6 @@ namespace Capstone
 			Console.WriteLine("What name should the reservation be made under?");
 			string name = Console.ReadLine();
 
-<<<<<<< HEAD
-			int reservationId = dal.CreateReservation(reservation);
-=======
 			reservation.SiteId = siteIdForReservation;
 			reservation.Name = name;
 			reservation.FromDate = Convert.ToDateTime(fromDate);
@@ -290,7 +274,6 @@ namespace Capstone
 			{
 				Console.WriteLine($"Your reservation is complete.  Reservation id is {reservationId}.");
 			}
->>>>>>> 6d338b4f801db1c7b325e51e5f0c63e8b3e8f65b
 		}
 
 		public int CheckDateDays(string stringFromDate, string stringToDate)

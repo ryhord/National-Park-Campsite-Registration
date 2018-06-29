@@ -8,39 +8,57 @@ using Capstone.Models;
 
 namespace Capstone.DAL
 {
-	//public class ReservationDAL
-	//{
-	//	private readonly string connectionString;
+	public class ReservationDAL
+	{
+		private readonly string connectionString;
 
-	//	public ReservationDAL(string databaseConnectionString)
-	//	{
-	//		connectionString = databaseConnectionString;
-	//	}
+		public ReservationDAL(string databaseConnectionString)
+		{
+			connectionString = databaseConnectionString;
+		}
 
-	//	public int CreateReservation()
-	//	{
-	//		int reservationId = 0;
-	//		try
-	//		{
-	//			// Create a connection
-	//			using (SqlConnection conn = new SqlConnection(connectionString))
-	//			{
-	//				conn.Open();
+		public int CreateReservation(Reservation newReservation)
+		{
+			int rowsAffected = 0;
+			int	reservationId = 0;
 
-	//				SqlCommand cmd = new SqlCommand("INSERT INTO reservation(name) VALUES(@name);", conn);
-	//				cmd.Parameters.AddWithValue("@name", newDepartment.Name);
+			try
+			{
+				// Create a connection
+				using (SqlConnection conn = new SqlConnection(connectionString))
+				{
+					conn.Open();
 
-	//				// Execute the command
-	//				rowsAffected = cmd.ExecuteNonQuery();
+					SqlCommand cmd = new SqlCommand("INSERT INTO reservation(site_id, name, from_date, to_date) VALUES(@site_id, @name, @fromdate, @todate);", conn);
+					cmd.Parameters.AddWithValue("@name", newReservation.Name);
+					cmd.Parameters.AddWithValue("@fromDate", newReservation.FromDate);
+					cmd.Parameters.AddWithValue("@toDate", newReservation.ToDate);
 
-	//			}
-	//		}
-	//		catch (SqlException ex)
-	//		{
+					// Execute the command
+					rowsAffected = cmd.ExecuteNonQuery();
 
-	//			Console.WriteLine(ex.Message); ;
-	//		}
-	//		return rowsAffected;
-	//	}
-	//}
+					if (rowsAffected > 0)
+					{
+						SqlCommand cmd2 = new SqlCommand("SELECT reservation.reservation_id FROM reservation WHERE reservation.name = @name;", conn);
+
+						SqlDataReader reader = cmd2.ExecuteReader();
+
+						reservationId = Convert.ToInt32(reader["reservation_id"]);
+						return reservationId;
+					}
+					else
+					{
+						return rowsAffected;
+					}
+				}
+			}
+			catch (SqlException ex)
+			{
+
+				Console.WriteLine(ex.Message); ;
+			}
+
+			return rowsAffected;
+		}
+	}
 }

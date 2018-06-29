@@ -17,7 +17,7 @@ namespace Capstone.DAL
 			connectionString = databaseConnectionString;
 		}
 
-		public List<Site> GetAvailableSitesByCampground(int id, string fromDate, string toDate)
+		public List<Site> GetAvailableSitesByCampground(int id, string fromDate, string toDate, int numOfDays)
 		{
 			List<Site> availableSites = new List<Site>();
 			try
@@ -26,7 +26,9 @@ namespace Capstone.DAL
 				{
 					conn.Open();
 
-					SqlCommand cmd = new SqlCommand($"SELECT TOP 5 * FROM site " +
+					SqlCommand cmd = new SqlCommand($"SELECT TOP 5 site.*, (campground.daily_fee * {numOfDays}) " +
+						$"FROM site " +
+						$"INNER JOIN campground ON site.campground_id = campground.campground_id " +
 						$"WHERE site.campground_id = {id} " +
 						$"AND site.site_id NOT IN " +
 						$"(SELECT site.site_id FROM reservation " +

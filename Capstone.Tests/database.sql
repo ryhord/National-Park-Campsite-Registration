@@ -5,23 +5,23 @@ DELETE FROM park;
 
 
 SET IDENTITY_INSERT park ON;
-INSERT INTO park (park_id, name, location, establish_date, area, visitors, description) VALUES (1, 'Park', 'Ohio', '2018-01-01', 2, 'Description');
-INSERT INTO park (park_id, name, location, establish_date, area, visitors, description) VALUES (2, 'Other Park', 'Florida', '2018-02-01', 2, 'Description 2');
+INSERT INTO park (park_id, name, location, establish_date, area, visitors, description) VALUES (1, 'Park', 'Ohio', '2018-01-01', 10000, 2, 'Description');
+INSERT INTO park (park_id, name, location, establish_date, area, visitors, description) VALUES (2, 'Other Park', 'Florida', '2018-02-01', 4500, 9382, 'Description 2');
 SET IDENTITY_INSERT park OFF;
 
 SET IDENTITY_INSERT campground ON;
 INSERT INTO campground (campground_id, park_id, name, open_from_mm, open_to_mm, daily_fee) VALUES (1, 1, 'Test campground', '1', '12', '45.00');
 INSERT INTO campground (campground_id, park_id, name, open_from_mm, open_to_mm, daily_fee) VALUES (2, 2, 'Test campground', '4', '6', '75.00');
-INSERT INTO campground (campground_id, park_id, name, open_from_mm, open_to_mm, daily_fee) VALUES (2, 3, 'Test campground', '5', '9', '50.00');
+INSERT INTO campground (campground_id, park_id, name, open_from_mm, open_to_mm, daily_fee) VALUES (3, 2, 'Test campground', '5', '9', '50.00');
 SET IDENTITY_INSERT campground OFF;
 
 SET IDENTITY_INSERT site ON;
-INSERT INTO site (site_id, campground_id, site_number, max_occupancy, accessible, max_rv_length, utilities) VALUES (1, 1, 'Test site 1', '0', '12', '0');
-INSERT INTO site (site_id, campground_id, site_number, max_occupancy, accessible, max_rv_length, utilities) VALUES (2, 1, 'Test site 2', '0', '6', '1');
-INSERT INTO site (site_id, campground_id, site_number, max_occupancy, accessible, max_rv_length, utilities) VALUES (3, 2, 'Test site 3', '0', '9', '1');
-INSERT INTO site (site_id, campground_id, site_number, max_occupancy, accessible, max_rv_length, utilities) VALUES (4, 2, 'Test site 4', '1', '0', '0');
-INSERT INTO site (site_id, campground_id, site_number, max_occupancy, accessible, max_rv_length, utilities) VALUES (5, 3, 'Test site 5', '1', '0', '0');
-INSERT INTO site (site_id, campground_id, site_number, max_occupancy, accessible, max_rv_length, utilities) VALUES (6, 3, 'Test site 6', '1', '0', '1');
+INSERT INTO site (site_id, campground_id, site_number, max_occupancy, accessible, max_rv_length, utilities) VALUES (1, 1, 1, '10', '0', '12', '0');
+INSERT INTO site (site_id, campground_id, site_number, max_occupancy, accessible, max_rv_length, utilities) VALUES (2, 1, 2, '8', '0', '6', '1');
+INSERT INTO site (site_id, campground_id, site_number, max_occupancy, accessible, max_rv_length, utilities) VALUES (3, 2, 3, '3', '0', '9', '1');
+INSERT INTO site (site_id, campground_id, site_number, max_occupancy, accessible, max_rv_length, utilities) VALUES (4, 2, 4, '2', '1', '0', '0');
+INSERT INTO site (site_id, campground_id, site_number, max_occupancy, accessible, max_rv_length, utilities) VALUES (5, 3, 5, '6', '1', '0', '0');
+INSERT INTO site (site_id, campground_id, site_number, max_occupancy, accessible, max_rv_length, utilities) VALUES (6, 3, 6, '8', '1', '0', '1');
 SET IDENTITY_INSERT site OFF;
 
 SET IDENTITY_INSERT reservation ON;

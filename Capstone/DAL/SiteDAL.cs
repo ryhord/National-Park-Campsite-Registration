@@ -26,7 +26,7 @@ namespace Capstone.DAL
 				{
 					conn.Open();
 
-					SqlCommand cmd = new SqlCommand($"SELECT TOP 5 site.*, (campground.daily_fee * {numOfDays}) " +
+					SqlCommand cmd = new SqlCommand($"SELECT TOP 5 site.*, (campground.daily_fee * {numOfDays}) AS daily_fee " +
 						$"FROM site " +
 						$"INNER JOIN campground ON site.campground_id = campground.campground_id " +
 						$"WHERE site.campground_id = {id} " +
@@ -53,6 +53,7 @@ namespace Capstone.DAL
 						site.IsAccessible = Convert.ToBoolean(reader["accessible"]);
 						site.MaxRvLength = Convert.ToInt32(reader["max_rv_length"]);
 						site.HasUtilities = Convert.ToBoolean(reader["utilities"]);
+						site.TotalCost = Convert.ToDecimal(reader["daily_fee"]);
 
 						availableSites.Add(site);
 					}

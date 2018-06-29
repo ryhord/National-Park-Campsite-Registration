@@ -15,6 +15,7 @@ namespace Capstone.Models
 		public bool IsAccessible { get; set; }
 		public int MaxRvLength { get; set; }
 		public bool HasUtilities { get; set; }
+		public decimal TotalCost { get; set; }
 
 		public override string ToString()
 		{
@@ -46,6 +47,8 @@ namespace Capstone.Models
 			{
 				output += "N/A".PadRight(10);
 			}
+
+			output += $"{TotalCost.ToString("C").PadRight(10)}";
 
 			return output;
 		}

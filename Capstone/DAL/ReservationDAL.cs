@@ -30,6 +30,7 @@ namespace Capstone.DAL
 					conn.Open();
 
 					SqlCommand cmd = new SqlCommand("INSERT INTO reservation(site_id, name, from_date, to_date) VALUES(@site_id, @name, @fromdate, @todate);", conn);
+					cmd.Parameters.AddWithValue("@site_id", newReservation.SiteId);
 					cmd.Parameters.AddWithValue("@name", newReservation.Name);
 					cmd.Parameters.AddWithValue("@fromDate", newReservation.FromDate);
 					cmd.Parameters.AddWithValue("@toDate", newReservation.ToDate);
@@ -39,11 +40,16 @@ namespace Capstone.DAL
 
 					if (rowsAffected > 0)
 					{
-						SqlCommand cmd2 = new SqlCommand("SELECT reservation.reservation_id FROM reservation WHERE reservation.name = @name;", conn);
+						SqlCommand cmd2 = new SqlCommand("SELECT reservation_id FROM reservation WHERE name = @name AND site_id = @site_id;", conn);
+						cmd2.Parameters.AddWithValue("@name", newReservation.Name);
+						cmd2.Parameters.AddWithValue("@site_id", newReservation.SiteId);
 
 						SqlDataReader reader = cmd2.ExecuteReader();
 
-						reservationId = Convert.ToInt32(reader["reservation_id"]);
+						while (reader.Read())
+						{
+							reservationId = Convert.ToInt32(reader["reservation_id"]);
+						}
 						return reservationId;
 					}
 					else

@@ -27,8 +27,12 @@ namespace Capstone
 				Console.WriteLine();
 				Console.Write("Please make a selection: ");
 				string input = Console.ReadLine().ToLower();
+<<<<<<< HEAD
 				
 				// SelectingParkToGetInfoAbout
+=======
+
+>>>>>>> 6d338b4f801db1c7b325e51e5f0c63e8b3e8f65b
 				switch (input)
 				{
 					case "q":
@@ -48,18 +52,26 @@ namespace Capstone
 						break;
 				}
 
+<<<<<<< HEAD
 				// selectedParkID used to get relevant submenu
+=======
+
+>>>>>>> 6d338b4f801db1c7b325e51e5f0c63e8b3e8f65b
 				while (isRunningSubmenu)
 				{
 					int parkInfoSubmenuChoice = ParkInfoSubmenu();
 					int campgroundInfoSubmenuChoice = 0;
 					switch (parkInfoSubmenuChoice)
 					{
+<<<<<<< HEAD
 						// viewing campgrounds in the selectedParkId
+=======
+>>>>>>> 6d338b4f801db1c7b325e51e5f0c63e8b3e8f65b
 						case 1:
 							Console.Clear();
 							CampgroundsInSelectedPark(selectedParkID);
 							PrintAllListItems(campgrounds.ToArray());
+<<<<<<< HEAD
 							Console.WriteLine();
 
 							while (true)
@@ -85,6 +97,83 @@ namespace Capstone
 							Console.WriteLine("What is the name the reservation is under?");
 							string name = Console.ReadLine();
 							SearchForReservation(name);
+=======
+							Console.WriteLine("");
+							campgroundInfoSubmenuChoice = CampgroundInfoSubmenu();
+
+							switch (campgroundInfoSubmenuChoice)
+							{
+								case 1:
+									while (true)
+									{
+										Console.WriteLine("Which campground? (Enter 0 to cancel)");
+										int campgroundChoice = Convert.ToInt32(Console.ReadLine());
+
+										if (campgroundChoice == 0)
+										{
+											break;
+										}
+										if(campgroundChoice > campgrounds.Count)
+										{
+											Console.WriteLine("The number you entered is not associated with a campsite.");
+											break;
+										}
+
+										Console.WriteLine("Enter the start date for your reservation: (YYYY-MM-DD)");
+										string fromDate = Console.ReadLine();
+
+										Console.WriteLine("Enter the end date for your reservation: (YYYY-MM-DD)");
+										string toDate = Console.ReadLine();
+										int numberOfDaysBooked = CheckDateDays(fromDate, toDate);
+
+										if(numberOfDaysBooked < 0)
+										{
+											Console.WriteLine("Your start date cannot come after your end date");
+											break;
+										}
+
+										int campgroundId = campgrounds[campgroundChoice - 1].CampgroundId;
+										GetAvailableSitesByCampGround(campgroundId, fromDate, toDate, numberOfDaysBooked);
+
+										if (availableSites.Count == 0)
+										{
+											Console.WriteLine("There are no sites available during this date range.");
+											Console.Write("Would you like to try again? Y/N > ");
+											string userInput = Console.ReadLine().ToUpper();
+											if (userInput == "Y" || userInput == "N")
+											{
+												if (userInput == "N")
+												{
+													break;
+												}
+											}
+											else
+											{
+												Console.WriteLine("Idiot");
+											}
+										}
+										else
+										{
+											PrintAllListItems(availableSites.ToArray());
+											BookReservation(fromDate, toDate);
+											//Which site should be reserved(enter 0 to cancel) ? __
+											//What name should the reservation be made under? __
+											//The reservation has been made and the confirmation id is { Reservation_id}
+
+											break;
+										}
+									}
+									break;
+
+								case 2:
+									break;
+							}
+
+							break;
+
+						case 2:
+
+>>>>>>> 6d338b4f801db1c7b325e51e5f0c63e8b3e8f65b
 							break;
 
 						case 3:
@@ -95,6 +184,7 @@ namespace Capstone
 			}
 		}
 
+<<<<<<< HEAD
 		private void SearchForAvailableReservationsWithinCampground()
 		{
 			while (true)
@@ -167,6 +257,11 @@ namespace Capstone
 
 		private void BookReservation()
 		{
+=======
+		public void BookReservation(string fromDate, string toDate)
+		{
+
+>>>>>>> 6d338b4f801db1c7b325e51e5f0c63e8b3e8f65b
 			Reservation reservation = new Reservation();
 
 			ReservationDAL dal = new ReservationDAL(DatabaseConnectionString);
@@ -177,7 +272,25 @@ namespace Capstone
 			Console.WriteLine("What name should the reservation be made under?");
 			string name = Console.ReadLine();
 
+<<<<<<< HEAD
 			int reservationId = dal.CreateReservation(reservation);
+=======
+			reservation.SiteId = siteIdForReservation;
+			reservation.Name = name;
+			reservation.FromDate = Convert.ToDateTime(fromDate);
+			reservation.ToDate = Convert.ToDateTime(toDate);
+
+			int reservationId = dal.CreateReservation(reservation);
+
+			if (reservationId == 0)
+			{
+				Console.WriteLine("Failed to complete reservation.");
+			}
+			else
+			{
+				Console.WriteLine($"Your reservation is complete.  Reservation id is {reservationId}.");
+			}
+>>>>>>> 6d338b4f801db1c7b325e51e5f0c63e8b3e8f65b
 		}
 
 		public int CheckDateDays(string stringFromDate, string stringToDate)

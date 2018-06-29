@@ -160,11 +160,6 @@ namespace Capstone
 
 							break;
 
-						case 2:
-
-
-							break;
-
 						case 3:
 							isRunningSubmenu = false;
 							break;

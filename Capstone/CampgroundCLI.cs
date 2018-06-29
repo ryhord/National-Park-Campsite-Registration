@@ -13,73 +13,105 @@ namespace Capstone
 		const string DatabaseConnectionString = @"Data Source=.\SQLEXPRESS;Initial Catalog=Campground;Integrated Security=True";
 
 		List<Campground> campgrounds = new List<Campground>();
-		List<Object> parks = new List<Object>();
+		List<Site> availableSites = new List<Site>();
 
 		public void RunProgram()
 		{
-			List<Park> parks = GetAllParks();
-			
-			Console.WriteLine("Q) Quit");
-			Console.WriteLine();
-			Console.Write("Please make a selection: ");
-			string input = Console.ReadLine().ToLower();
-
-			int selectedParkID = parks[int.Parse(input) - 1].ParkId;
-
-			if (input == "q")
-			{
-				return;
-			}
-			else
-			{
-				try
-				{
-					
-					GetParkInfo(selectedParkID);
-				}
-				catch (Exception ex)
-				{
-					Console.WriteLine("Idiot");
-				}
-			}
-
 			while (true)
 			{
-				int parkInfoSubmenuChoice = ParkInfoSubmenu();
-				int campgroundInfoSubmenuChoice = 0;
-				switch (parkInfoSubmenuChoice)
+				List<Park> parks = GetAllParks();
+				bool isRunningSubmenu = true;
+				int selectedParkID = 0;
+
+				Console.WriteLine("Q) Quit");
+				Console.WriteLine();
+				Console.Write("Please make a selection: ");
+				string input = Console.ReadLine().ToLower();
+
+				if (input == "q")
 				{
-					case 1:
-						CampgroundsInSelectedPark(selectedParkID);
-						PrintAllCampgrounds(campgrounds);
-						campgroundInfoSubmenuChoice = CampgroundInfoSubmenu();
+					return;
+				}
+				else
+				{
+					try
+					{
+						selectedParkID = parks[int.Parse(input) - 1].ParkId;
+						GetParkInfo(selectedParkID);
+					}
+					catch (Exception ex)
+					{
+						Console.WriteLine("Idiot");
+					}
+				}
 
-						switch (campgroundInfoSubmenuChoice)
-						{
-							case 1:
-								Console.WriteLine("Which campground? (Enter 0 to cancel)");
-								int campgroundChoice =  Convert.ToInt32(Console.ReadLine());
-								Console.WriteLine("Enter the start date for your reservation.. (YYYY-MM-DD)");
-								string fromDate = Console.ReadLine();
-								Console.WriteLine("Enter the end date for your reservation.. (YYYY-MM-DD)");
-								string toDate = Console.ReadLine();
-								int campgroundId = campgrounds[campgroundChoice - 1].CampgroundId;
-								List<Object> availableSites = GetAvailableSitesByCampGround(campgroundId, fromDate, toDate);
-								PrintAllListItems(availableSites);
-								break;
-							case 2:
-								break;
-						}
-						break;
+				while (isRunningSubmenu)
+				{
+					int parkInfoSubmenuChoice = ParkInfoSubmenu();
+					int campgroundInfoSubmenuChoice = 0;
+					switch (parkInfoSubmenuChoice)
+					{
+						case 1:
+							CampgroundsInSelectedPark(selectedParkID);
+							PrintAllListItems(campgrounds.ToArray());
+							campgroundInfoSubmenuChoice = CampgroundInfoSubmenu();
 
-					case 2:
-						break;
-					case 3:
-						break;
+							switch (campgroundInfoSubmenuChoice)
+							{
+								case 1:
+									while (true)
+									{
+										Console.WriteLine("Which campground? (Enter 0 to cancel)");
+										int campgroundChoice = Convert.ToInt32(Console.ReadLine());
+										Console.WriteLine("Enter the start date for your reservation: (YYYY-MM-DD)");
+										string fromDate = Console.ReadLine();
+										Console.WriteLine("Enter the end date for your reservation: (YYYY-MM-DD)");
+										string toDate = Console.ReadLine();
+										int campgroundId = campgrounds[campgroundChoice - 1].CampgroundId;
+										GetAvailableSitesByCampGround(campgroundId, fromDate, toDate);
+
+										if (availableSites.Count == 0)
+										{
+											Console.WriteLine("There are no sites available during this date range.");
+											Console.Write("Would you like to try again? Y/N > ");
+											string userInput = Console.ReadLine().ToUpper();
+											if (userInput == "Y" || userInput == "N")
+											{
+												if (userInput == "N")
+												{
+													break;
+												}
+											}
+											else
+											{
+												Console.WriteLine("Idiot");
+											}
+										}
+										else
+										{
+											PrintAllListItems(availableSites.ToArray());
+											break;
+										}
+									}
+									break;
+
+								case 2:
+									break;
+							}
+
+							break;
+
+						case 2:
+
+							break;
+
+						case 3:
+							isRunningSubmenu = false;
+							break;
+					}
 				}
 			}
 		}
-
 
 		public void GetParkInfo(int parkId)
 		{
@@ -132,45 +164,19 @@ namespace Capstone
 			return parks;
 		}
 
-		public List<Object> GetAvailableSitesByCampGround(int campgroundId, string fromDate, string toDate)
+		public void GetAvailableSitesByCampGround(int campgroundId, string fromDate, string toDate)
 		{
 			SiteDAL dal = new SiteDAL(DatabaseConnectionString);
 
-			List<Object> availableSites = dal.GetAvailableSitesByCampground(campgroundId, fromDate, toDate);
-
-			return availableSites;
+			availableSites = dal.GetAvailableSitesByCampground(campgroundId, fromDate, toDate);
 		}
 
-		public void PrintAllListItems(List<Object> list)
+		public void PrintAllListItems(Object[] array)
 		{
-			for (int i = 1; i <= list.Count; i++)
+			for (int i = 1; i <= array.Length; i++)
 			{
-				Console.WriteLine($"{i}) {list[i - 1].ToString()}"); 
-
+				Console.WriteLine($"{i}) {array[i - 1].ToString()}");
 			}
 		}
-
-		public void PrintAllCampgrounds(List<Campground> list)
-		{
-			for (int i = 1; i <= list.Count; i++)
-			{
-				Console.WriteLine($"{i}) {list[i - 1].ToString()}");
-
-			}
-		}
-
-		//public void GetAllCampgrounds()
-		//{
-		//	CampgroundDAL dal = new CampgroundDAL(DatabaseConnectionString);
-
-		//	List<Campground> campgrounds = dal.GetAllCampgrounds();
-
-		//	Console.WriteLine();
-		//	Console.WriteLine("Here are all the available campgrounds");
-		//	foreach (Campground cg in campgrounds)
-		//	{
-		//		Console.WriteLine(cg);
-		//	}
-		//}
 	}
 }

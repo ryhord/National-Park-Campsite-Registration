@@ -74,7 +74,7 @@ namespace Capstone
 								// return to previousScreen
 								case 2:
 									break;
-							}	
+							}
 							break;
 
 						// Search for Reservation from the first Menu
@@ -200,32 +200,44 @@ namespace Capstone
 
 		public void BookReservation(string fromDate, string toDate)
 		{
-
-
 			Reservation reservation = new Reservation();
+			bool isListedSite = false;
 
 			ReservationDAL dal = new ReservationDAL(DatabaseConnectionString);
 
 			Console.WriteLine("Enter the site number that should be reserved? (Enter 0 to cancel)");
 			int siteIdForReservation = Convert.ToInt32(Console.ReadLine());
 
-			Console.WriteLine("What name should the reservation be made under?");
-			string name = Console.ReadLine();
-
-			reservation.SiteId = siteIdForReservation;
-			reservation.Name = name;
-			reservation.FromDate = Convert.ToDateTime(fromDate);
-			reservation.ToDate = Convert.ToDateTime(toDate);
-
-			int reservationId = dal.CreateReservation(reservation);
-
-			if (reservationId == 0)
+			foreach (Site site in availableSites)
 			{
-				Console.WriteLine("Failed to complete reservation.");
+				if (site.SiteId == siteIdForReservation)
+				{
+					Console.WriteLine("What name should the reservation be made under?");
+					string name = Console.ReadLine();
+
+					reservation.SiteId = siteIdForReservation;
+					reservation.Name = name;
+					reservation.FromDate = Convert.ToDateTime(fromDate);
+					reservation.ToDate = Convert.ToDateTime(toDate);
+
+					int reservationId = dal.CreateReservation(reservation);
+
+					if (reservationId == 0)
+					{
+						Console.WriteLine("Failed to complete reservation.");
+					}
+					else
+					{
+						Console.WriteLine($"Your reservation is complete.  Reservation id is {reservationId}.");
+					}
+					isListedSite = true;
+					break;
+				}
+	
 			}
-			else
+			if (!isListedSite)
 			{
-				Console.WriteLine($"Your reservation is complete.  Reservation id is {reservationId}.");
+				Console.WriteLine($"Site {siteIdForReservation} is not an available selection.");
 			}
 		}
 
@@ -280,7 +292,7 @@ namespace Capstone
 
 			List<Park> parks = dal.GetAllParks();
 
-			
+
 			for (int i = 1; i <= parks.Count; i++)
 			{
 				Console.WriteLine($"{i}) {parks[i - 1].Name}");

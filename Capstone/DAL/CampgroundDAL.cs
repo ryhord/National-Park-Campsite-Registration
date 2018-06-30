@@ -33,7 +33,7 @@ namespace Capstone.DAL
 					// Loop through each row
 					while (reader.Read())
 					{
-						// Create a Park
+						// Create a Campground
 						Campground cg = new Campground();
 						cg.CampgroundId = Convert.ToInt32(reader["campground_id"]);
 						cg.ParkId = Convert.ToInt32(reader["park_id"]);
@@ -48,7 +48,6 @@ namespace Capstone.DAL
 			}
 			catch (SqlException ex)
 			{
-
 				Console.WriteLine(ex.Message);
 			}
 

@@ -49,7 +49,6 @@ namespace Capstone.DAL
 			}
 			catch (SqlException ex)
 			{
-
 				Console.WriteLine(ex.Message);
 			}
 
@@ -86,7 +85,6 @@ namespace Capstone.DAL
 			}
 			catch (SqlException ex)
 			{
-
 				Console.WriteLine(ex.Message);
 			}
 

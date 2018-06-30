@@ -206,37 +206,39 @@ namespace Capstone
 			Console.WriteLine("Enter the site number that should be reserved? (Enter 0 to cancel)");
 			int siteIdForReservation = Convert.ToInt32(Console.ReadLine());
 
-			foreach (Site site in availableSites)
+			if (siteIdForReservation != 0)
 			{
-				if (site.SiteId == siteIdForReservation)
+				foreach (Site site in availableSites)
 				{
-					Console.WriteLine("What name should the reservation be made under?");
-					string name = Console.ReadLine();
-
-					reservation.SiteId = siteIdForReservation;
-					reservation.Name = name;
-					reservation.FromDate = Convert.ToDateTime(fromDate);
-					reservation.ToDate = Convert.ToDateTime(toDate);
-
-					int reservationId = dal.CreateReservation(reservation);
-
-					if (reservationId == 0)
+					if (site.SiteId == siteIdForReservation)
 					{
-						Console.WriteLine("Failed to complete reservation.");
-					}
-					else
-					{
-						Console.WriteLine($"Your reservation is complete.  Reservation id is {reservationId}.");
-					}
+						Console.WriteLine("What name should the reservation be made under?");
+						string name = Console.ReadLine();
 
-					isListedSite = true;
-					break;
+						reservation.SiteId = siteIdForReservation;
+						reservation.Name = name;
+						reservation.FromDate = Convert.ToDateTime(fromDate);
+						reservation.ToDate = Convert.ToDateTime(toDate);
+
+						int reservationId = dal.CreateReservation(reservation);
+
+						if (reservationId == 0)
+						{
+							Console.WriteLine("Failed to complete reservation.");
+						}
+						else
+						{
+							Console.WriteLine($"Your reservation is complete.  Reservation id is {reservationId}.");
+						}
+
+						isListedSite = true;
+						break;
+					}
 				}
-	
-			}
-			if (!isListedSite)
-			{
-				Console.WriteLine($"Site {siteIdForReservation} is not an available selection.");
+				if (!isListedSite)
+				{
+					Console.WriteLine($"Site {siteIdForReservation} is not an available selection.");
+				}
 			}
 		}
 

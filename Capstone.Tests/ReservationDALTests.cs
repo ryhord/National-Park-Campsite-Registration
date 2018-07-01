@@ -21,10 +21,11 @@ namespace Capstone.Tests
 			res.FromDate = Convert.ToDateTime("2019-06-20");
 			res.ToDate = Convert.ToDateTime("2019-06-23");
 
-			Assert.AreEqual(60, dal.CreateReservation(res));
+			int resId = dal.CreateReservation(res);
+			int expectedId = 1;
 
-
-
+			Assert.AreEqual(expectedId, resId);
 		}
+
 	}
 }

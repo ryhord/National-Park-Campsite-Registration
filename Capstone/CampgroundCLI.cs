@@ -95,7 +95,7 @@ namespace Capstone
 			}
 		}
 
-		private bool IsCampgroundOpen(string fromDate, string toDate, int campgroundChoice)
+		public bool IsCampgroundOpen(string fromDate, string toDate, int campgroundChoice, List<Campground> campgrounds)
 		{
 			int campgroundOpenFromMonth = campgrounds[campgroundChoice - 1].OpenFrom;
 			int campgroundOpenToMonth = campgrounds[campgroundChoice - 1].OpenTo;
@@ -143,7 +143,7 @@ namespace Capstone
 				string toDate = Console.ReadLine();
 				int numberOfDaysBooked = CheckDateDays(fromDate, toDate);
 
-				if (!IsCampgroundOpen(fromDate, toDate, campgroundChoice))
+				if (!IsCampgroundOpen(fromDate, toDate, campgroundChoice, campgrounds))
 				{
 					Console.WriteLine("This campground is not open for all of the days listed in your stay");
 					break;

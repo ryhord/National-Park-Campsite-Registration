@@ -20,7 +20,7 @@ namespace Capstone.Models
 			string openFromMonth = ToStringMonth(OpenFrom);
 			string openToMonth = ToStringMonth(OpenTo);
 
-			return Name.PadRight(30) + openFromMonth.PadRight(10) + openToMonth.PadRight(10) + DailyFee.ToString("C").PadLeft(15);
+			return Name.PadRight(35) + openFromMonth.PadRight(15) + openToMonth.PadRight(15) + DailyFee.ToString("C").PadLeft(10);
 		}
 
 		public string ToStringMonth(int monthInt)

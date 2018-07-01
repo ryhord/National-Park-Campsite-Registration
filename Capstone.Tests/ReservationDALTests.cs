@@ -15,14 +15,13 @@ namespace Capstone.Tests
 		public void CreateReservation_Test()
 		{
 			Reservation res = new Reservation();
-			res.ReservationId = 60;
 			res.SiteId = 6;
 			res.Name = "Ryan";
 			res.FromDate = Convert.ToDateTime("2019-06-20");
 			res.ToDate = Convert.ToDateTime("2019-06-23");
 
 			int resId = dal.CreateReservation(res);
-			int expectedId = 1;
+			int expectedId = 7;
 
 			Assert.AreEqual(expectedId, resId);
 		}

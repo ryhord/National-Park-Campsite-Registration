@@ -19,9 +19,11 @@ namespace Capstone
 		{
 			while (true)
 			{
-				bool isRunningSubmenu = true;
+				bool isRunningSubmenu = false;
 				int selectedParkID = 0;
-				Console.WriteLine("Select a park for further details");
+				
+				Console.WriteLine("Welcome to the National Park Campsite Reservation system!");
+				Console.WriteLine("Select a park for further details:");
 				List<Park> parks = GetAllParks();
 				Console.WriteLine("Q) Quit");
 				Console.WriteLine();
@@ -40,6 +42,7 @@ namespace Capstone
 						selectedParkID = parks[int.Parse(input) - 1].ParkId;
 						GetParkInfo(selectedParkID);
 						Console.WriteLine("");
+						isRunningSubmenu = true;
 						break;
 					default:
 						Console.Clear();
@@ -60,6 +63,8 @@ namespace Capstone
 						case 1:
 							Console.Clear();
 							CampgroundsInSelectedPark(selectedParkID);
+							Console.WriteLine("   Name".PadRight(15) + "Open From".PadLeft(32) + 
+								"Open To".PadLeft(13) + "Daily Fee".PadLeft(21));
 							PrintAllListItems(campgrounds.ToArray());
 							Console.WriteLine();
 
@@ -82,7 +87,7 @@ namespace Capstone
 							// DOESNT DO ANYTHING YET. TALK ABOUT HOW AND WHERE TO SEARCH
 							Console.WriteLine("What is the name the reservation is under?");
 							string name = Console.ReadLine();
-							SearchForReservation(name);
+							// SearchForReservation(name);
 							Console.WriteLine("");
 							campgroundInfoSubmenuChoice = CampgroundInfoSubmenu();
 							break;
@@ -189,11 +194,6 @@ namespace Capstone
 					break;
 				}
 			}
-		}
-
-		private void SearchForReservation(string name)
-		{
-			throw new NotImplementedException();
 		}
 
 		public void BookReservation(string fromDate, string toDate)

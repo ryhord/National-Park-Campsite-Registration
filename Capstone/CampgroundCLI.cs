@@ -14,47 +14,48 @@ namespace Capstone
 
 		List<Campground> campgrounds = new List<Campground>();
 		List<Site> availableSites = new List<Site>();
+		
 
 		public void RunProgram()
 		{
+			
 			while (true)
 			{
-				bool isRunningSubmenu = false;
-				int selectedParkID = 0;
-				
-				Console.WriteLine("Welcome to the National Park Campsite Reservation system!");
-				Console.WriteLine("Select a park for further details:");
 				List<Park> parks = GetAllParks();
-				Console.WriteLine("Q) Quit");
-				Console.WriteLine();
+				bool isRunningSubmenu = true;
+				int selectedParkID = 0;
+				PrintParkSelectionMenu(parks);
+				
+				// Get User Park Selection
+					// userParkSelection = GetUserParkSelection();
 				Console.Write("Please make a selection: ");
 				string input = Console.ReadLine().ToLower();
 
 				// SelectingParkToGetInfoAbout
-				switch (input)
+				if (input == "q")
 				{
-					case "q":
-						return;
-					case "1":
-					case "2":
-					case "3":
-						Console.Clear();
-						selectedParkID = parks[int.Parse(input) - 1].ParkId;
-						GetParkInfo(selectedParkID);
-						Console.WriteLine("");
-						isRunningSubmenu = true;
-						break;
-					default:
-						Console.Clear();
-						Console.WriteLine("The command provided was not a valid command, please try again.");
-						Console.WriteLine("");
-						break;
+					return;
+				}
+				else if (input == "1" || input == "2" || input == "3")
+				{
+					selectedParkID = ExecuteUserChoice(input, parks);
+					GetParkInfo(selectedParkID);
+					Console.WriteLine("");
+				}
+				else
+				{
+					Console.Clear();
+					Console.WriteLine("The command provided was not a valid command, please try again.");
+					Console.WriteLine("");
+					RunProgram();
 				}
 
 				// selectedParkID used to get relevant submenu
 				while (isRunningSubmenu)
 				{
-					int parkInfoSubmenuChoice = ParkInfoSubmenu();
+					PrintParkInfoSubmenu();
+					int parkInfoSubmenuChoice = GetParkInfoSubmenuChoice();
+					
 					int campgroundInfoSubmenuChoice = 0;
 					switch (parkInfoSubmenuChoice)
 					{
@@ -68,7 +69,8 @@ namespace Capstone
 							PrintAllListItems(campgrounds.ToArray());
 							Console.WriteLine();
 
-							campgroundInfoSubmenuChoice = CampgroundInfoSubmenu();
+							PrintCampgroundInfoSubmenu();
+							campgroundInfoSubmenuChoice = GetCampgroundInfoSubmenuChoice();
 							switch (campgroundInfoSubmenuChoice)
 							{
 								// Searching For Avilable Reservations within the campground of choice
@@ -85,11 +87,6 @@ namespace Capstone
 						// Search for Reservation from the first Menu
 						case 2:
 							// DOESNT DO ANYTHING YET. TALK ABOUT HOW AND WHERE TO SEARCH
-							Console.WriteLine("What is the name the reservation is under?");
-							string name = Console.ReadLine();
-							// SearchForReservation(name);
-							Console.WriteLine("");
-							campgroundInfoSubmenuChoice = CampgroundInfoSubmenu();
 							break;
 
 						case 3:
@@ -98,6 +95,20 @@ namespace Capstone
 					}
 				}
 			}
+		}
+
+		private int ExecuteUserChoice(string input, List<Park> parks)
+		{
+				Console.Clear();
+				return parks[int.Parse(input) - 1].ParkId;
+		}
+
+		private void PrintParkSelectionMenu(List<Park> parks)
+		{
+			Console.WriteLine("Select a park for further details");
+			PrintAllParks(parks);
+			Console.WriteLine("Q) Quit");
+			Console.WriteLine();
 		}
 
 		public bool IsCampgroundOpen(string fromDate, string toDate, int campgroundChoice, List<Campground> campgrounds)
@@ -258,16 +269,18 @@ namespace Capstone
 			Console.WriteLine($"{dal.GetParkById(parkId)}");
 		}
 
-		public int ParkInfoSubmenu()
+		public void PrintParkInfoSubmenu()
 		{
 			Console.WriteLine("Select a Command ");
 			Console.WriteLine("1) View Campgrounds");
 			Console.WriteLine("2) Search for Reservation");
 			Console.WriteLine("3) Return to Park Selection Screen");
+		}
+
+		public int GetParkInfoSubmenuChoice()
+		{
 			Console.Write("> ");
-
 			int choice = int.Parse(Console.ReadLine());
-
 			return choice;
 		}
 
@@ -277,15 +290,17 @@ namespace Capstone
 			campgrounds = dal.GetAllCampgrounds(parkId);
 		}
 
-		public int CampgroundInfoSubmenu()
+		public void PrintCampgroundInfoSubmenu()
 		{
 			Console.WriteLine("Select a Command ");
 			Console.WriteLine("1) Search for available reservation");
 			Console.WriteLine("2) Return to Previous Screen");
+		}
+
+		public int GetCampgroundInfoSubmenuChoice()
+		{
 			Console.Write("> ");
-
 			int choice = int.Parse(Console.ReadLine());
-
 			return choice;
 		}
 
@@ -295,12 +310,15 @@ namespace Capstone
 
 			List<Park> parks = dal.GetAllParks();
 
+			return parks;
+		}
+
+		public void PrintAllParks(List<Park> parks)
+		{
 			for (int i = 1; i <= parks.Count; i++)
 			{
 				Console.WriteLine($"{i}) {parks[i - 1].Name}");
 			}
-
-			return parks;
 		}
 
 		public void GetAvailableSitesByCampGround(int campgroundId, string fromDate, string toDate, int numberOfDaysBooked)

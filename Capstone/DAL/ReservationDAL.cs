@@ -20,7 +20,7 @@ namespace Capstone.DAL
 		public int CreateReservation(Reservation newReservation)
 		{
 			int rowsAffected = 0;
-			int	reservationId = 0;
+			int reservationId = 0;
 
 			try
 			{

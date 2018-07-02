@@ -65,7 +65,7 @@ namespace Capstone.DAL
 
 						SqlDataReader reader2 = cmd2.ExecuteReader();
 
-						while (reader.Read())
+						while (reader2.Read())
 						{
 							reservationId = Convert.ToInt32(reader2["reservation_id"]);
 						}

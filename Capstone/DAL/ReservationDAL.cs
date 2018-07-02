@@ -47,7 +47,6 @@ namespace Capstone.DAL
 							return rowsAffected;
 						}
 					}
-					reader.Close();
 
 					SqlCommand cmd = new SqlCommand("INSERT INTO reservation(site_id, name, from_date, to_date) VALUES(@site_id, @name, @fromdate, @todate);", conn);
 					cmd.Parameters.AddWithValue("@site_id", newReservation.SiteId);

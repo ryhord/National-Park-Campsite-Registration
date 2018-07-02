@@ -48,6 +48,8 @@ namespace Capstone.DAL
 						}
 					}
 
+					reader.Close();
+
 					SqlCommand cmd = new SqlCommand("INSERT INTO reservation(site_id, name, from_date, to_date) VALUES(@site_id, @name, @fromdate, @todate);", conn);
 					cmd.Parameters.AddWithValue("@site_id", newReservation.SiteId);
 					cmd.Parameters.AddWithValue("@name", newReservation.Name);
@@ -69,7 +71,9 @@ namespace Capstone.DAL
 						{
 							reservationId = Convert.ToInt32(reader2["reservation_id"]);
 						}
+						reader2.Close();
 						return reservationId;
+
 					}
 					else
 					{

@@ -32,23 +32,22 @@ namespace Capstone
 				string input = Console.ReadLine().ToLower();
 
 				// SelectingParkToGetInfoAbout
-				switch (input)
+				if (input == "q")
 				{
-					case "q":
-						return;
-					case "1":
-					case "2":
-					case "3":
-						Console.Clear();
-						selectedParkID = parks[int.Parse(input) - 1].ParkId;
-						GetParkInfo(selectedParkID);
-						Console.WriteLine("");
-						break;
-					default:
-						Console.Clear();
-						Console.WriteLine("The command provided was not a valid command, please try again.");
-						Console.WriteLine("");
-						break;
+					return;
+				}
+				else if (input == "1" || input == "2" || input == "3")
+				{
+					selectedParkID = ExecuteUserChoice(input, parks);
+					GetParkInfo(selectedParkID);
+					Console.WriteLine("");
+				}
+				else
+				{
+					Console.Clear();
+					Console.WriteLine("The command provided was not a valid command, please try again.");
+					Console.WriteLine("");
+					RunProgram();
 				}
 
 				// selectedParkID used to get relevant submenu
@@ -94,6 +93,12 @@ namespace Capstone
 					}
 				}
 			}
+		}
+
+		private int ExecuteUserChoice(string input, List<Park> parks)
+		{
+				Console.Clear();
+				return parks[int.Parse(input) - 1].ParkId;
 		}
 
 		private void PrintParkSelectionMenu(List<Park> parks)
